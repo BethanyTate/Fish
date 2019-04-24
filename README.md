@@ -1,9 +1,10 @@
 # What Do Fish Like to Eat?
 Firstly, import the dataset.
 ```{r}
+library(readr)
 fish <- read_delim("C:/Users/betha/Documents/Docs/Uni/Project/Data.txt", "\t", escape_double = FALSE, trim_ws = TRUE)
 ```
-Increse the margins to see the labels on graphs.
+Increase the margins to see the labels on graphs.
 ```{r}
 par(mar=c(5,6,4,1)+.1)
 ```
