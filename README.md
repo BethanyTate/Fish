@@ -29,7 +29,7 @@ Similar graph but including a 99.9% confidence band.
 m <- ggplot(acc, aes(log10(acc$`SI prey mass`), log10(acc$`SI predator mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)")) + theme(axis.title.y=element_text(size=30), axis.title.x=element_text(size=30), text = element_text(size=20))
 m + geom_smooth(method = "lm", col = "red", level = 0.999)
 ```
-
+Hypothesis test on gradient equalling 1.
 ```{r}
 b1 <- lm(log10(acc$`SI prey mass`) ~ log10(acc$`SI predator mass`), offset = log10(acc$`SI predator mass`))
 summary(b1)
