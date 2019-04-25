@@ -26,9 +26,16 @@ abline(reg, col="#c0392b", lwd = 2)
 ```
 Similar graph but including a 99.9% confidence band.
 ```{r}
-m2 <- ggplot(acc, aes(log10(acc$`SI prey mass`), log10(acc$`SI predator mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)")) + theme(axis.title.y=element_text(size=30), axis.title.x=element_text(size=30), text = element_text(size=20))
-m2 + geom_smooth(method = "lm", col = "red", level = 0.999)
+m <- ggplot(acc, aes(log10(acc$`SI prey mass`), log10(acc$`SI predator mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)")) + theme(axis.title.y=element_text(size=30), axis.title.x=element_text(size=30), text = element_text(size=20))
+m + geom_smooth(method = "lm", col = "red", level = 0.999)
 ```
+
+```{r}
+b1 <- lm(log10(acc$`SI prey mass`) ~ log10(acc$`SI predator mass`), offset = log10(acc$`SI predator mass`))
+summary(b1)
+stargazer(b1, summary=TRUE)
+```
+
 Reduce the data again by selecting only species which have more than 30 recorded encounters.
 ```{r}
 mostfish <- acc[acc$`Predator common name` %in% names(which(table(acc$`Predator common name`) > 29)), ]
