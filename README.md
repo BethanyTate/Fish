@@ -70,4 +70,35 @@ Create individual plots of logged predator masses against logged prey masses for
 species <- ggplot(mostfish, aes(log10(mostfish$`SI predator mass`), log10(mostfish$`SI prey mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)"))
 species + facet_wrap(vars(mostfish$`Predator common name`)) + theme(axis.title.y=element_text(size=25), axis.title.x=element_text(size=25))
 ```
+Split most accurate data (acc) depending on if the interaction is piscivorous/predacious or planktivorous.
+```{r}
+plank <- subset(acc, acc$`Type of feeding interaction` == "planktivorous")
+pisc <- subset(acc, acc$`Type of feeding interaction` == "piscivorous"| acc$`Type of feeding interaction` == "predacious"| acc$`Type of feeding interaction` == "predacious/piscivorous")
+```
+Create separate plots and summaries of logged predator mass against logged prey mass for predacious/piscivorous and planktivorous predators.
+Predacious/piscivorous:
+```{r}
+plot(log10(pisc$`SI predator mass`), log10(pisc$`SI prey mass`), pch=16, cex=0.4,  col="#21618c40", xlab=expression("log"[10]*"(predator mass)"), ylab=expression("log"[10]*"(prey mass)"), cex.lab=1.5, main = "Predacious/Piscivorous")
+piscreg <- lm(log10(pisc$`SI prey mass`) ~ log10(pisc$`SI predator mass`))
+abline(piscreg, col="#c0392b", lwd = 2)
+summary(piscreg)
+```
+Planktivorous:
+```{r}
+plot(log10(plank$`SI predator mass`), log10(plank$`SI prey mass`), pch=16, cex=0.4,  col="#21618c40", xlab=expression("log"[10]*"(predator mass)"), ylab=expression("log"[10]*"(prey mass)"), cex.lab=1.5, main = "Planktivorous")
+plankreg <- lm(log10(plank$`SI prey mass`) ~ log10(plank$`SI predator mass`))
+abline(plankreg, col="#c0392b", lwd = 2)
+summary(plankreg)
+```
+Offset linear models for planktivorous and piscivorous/predacious fish to test null hypothesis of gradient = 1.
+Predacious/piscivorous:
+```{r}
+bpisc <- lm(log10(pisc$`SI prey mass`) ~ log10(pisc$`SI predator mass`), offset = log10(pisc$`SI predator mass`))
+summary(bpisc)
+```
+Planktivorous:
+```{r}
+bplank <- lm(log10(plank$`SI prey mass`) ~ log10(plank$`SI predator mass`), offset = log10(plank$`SI predator mass`))
+summary(bplank)
+```
 
