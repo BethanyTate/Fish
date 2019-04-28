@@ -65,3 +65,9 @@ Select only species which have more than 30 recorded encounters for analysis on 
 ```{r}
 mostfish <- acc[acc$`Predator common name` %in% names(which(table(acc$`Predator common name`) > 29)), ]
 ```
+Create individual plots of logged predator masses against logged prey masses for each species.
+```{r}
+species <- ggplot(mostfish, aes(log10(mostfish$`SI predator mass`), log10(mostfish$`SI prey mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)"))
+species + facet_wrap(vars(mostfish$`Predator common name`)) + theme(axis.title.y=element_text(size=25), axis.title.x=element_text(size=25))
+```
+
