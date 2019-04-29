@@ -76,6 +76,7 @@ plank <- subset(acc, acc$`Type of feeding interaction` == "planktivorous")
 pisc <- subset(acc, acc$`Type of feeding interaction` == "piscivorous"| acc$`Type of feeding interaction` == "predacious"| acc$`Type of feeding interaction` == "predacious/piscivorous")
 ```
 Create separate plots and summaries of logged predator mass against logged prey mass for predacious/piscivorous and planktivorous predators.
+
 Predacious/piscivorous:
 ```{r}
 plot(log10(pisc$`SI predator mass`), log10(pisc$`SI prey mass`), pch=16, cex=0.4,  col="#21618c40", xlab=expression("log"[10]*"(predator mass)"), ylab=expression("log"[10]*"(prey mass)"), cex.lab=1.5, main = "Predacious/Piscivorous")
@@ -91,6 +92,7 @@ abline(plankreg, col="#c0392b", lwd = 2)
 summary(plankreg)
 ```
 Offset linear models for planktivorous and piscivorous/predacious fish to test null hypothesis of gradient = 1.
+
 Predacious/piscivorous:
 ```{r}
 bpisc <- lm(log10(pisc$`SI prey mass`) ~ log10(pisc$`SI predator mass`), offset = log10(pisc$`SI predator mass`))
@@ -281,5 +283,79 @@ sci <- sci[-c(11, 12, 13, 14, 16, 17, 18, 50), ]
 Remove this also from top47.
 ```{r}
 top47 <- top47[-c(11), ]
+```
+Find scientific names which are compatible with rfishbase by using the validate_names function. I have to do this separately for each one as there are a couple of common names which are not recognised (rows 5 and 18).
+```{r}
+sci$val[1] <- validate_names(sci$unique.mostfish.Predator.[1])
+sci$val[2] <- validate_names(sci$unique.mostfish.Predator.[2])
+sci$val[3] <- validate_names(sci$unique.mostfish.Predator.[3])
+sci$val[4] <- validate_names(sci$unique.mostfish.Predator.[4])
+
+sci$val[6] <- validate_names(sci$unique.mostfish.Predator.[6])
+sci$val[7] <- validate_names(sci$unique.mostfish.Predator.[7])
+sci$val[8] <- validate_names(sci$unique.mostfish.Predator.[8])
+sci$val[9] <- validate_names(sci$unique.mostfish.Predator.[9])
+sci$val[10] <- validate_names(sci$unique.mostfish.Predator.[10])
+sci$val[11] <- validate_names(sci$unique.mostfish.Predator.[11])
+sci$val[12] <- validate_names(sci$unique.mostfish.Predator.[12])
+sci$val[13] <- validate_names(sci$unique.mostfish.Predator.[13])
+sci$val[14] <- validate_names(sci$unique.mostfish.Predator.[14])
+sci$val[15] <- validate_names(sci$unique.mostfish.Predator.[15])
+sci$val[16] <- validate_names(sci$unique.mostfish.Predator.[16])
+sci$val[17] <- validate_names(sci$unique.mostfish.Predator.[17])
+
+sci$val[19] <- validate_names(sci$unique.mostfish.Predator.[19])
+sci$val[20] <- validate_names(sci$unique.mostfish.Predator.[20])
+sci$val[21] <- validate_names(sci$unique.mostfish.Predator.[21])
+sci$val[22] <- validate_names(sci$unique.mostfish.Predator.[22])
+sci$val[23] <- validate_names(sci$unique.mostfish.Predator.[23])
+sci$val[24] <- validate_names(sci$unique.mostfish.Predator.[24])
+sci$val[25] <- validate_names(sci$unique.mostfish.Predator.[25])
+sci$val[26] <- validate_names(sci$unique.mostfish.Predator.[26])
+sci$val[27] <- validate_names(sci$unique.mostfish.Predator.[27])
+sci$val[28] <- validate_names(sci$unique.mostfish.Predator.[28])
+sci$val[29] <- validate_names(sci$unique.mostfish.Predator.[29])
+sci$val[30] <- validate_names(sci$unique.mostfish.Predator.[30])
+sci$val[31] <- validate_names(sci$unique.mostfish.Predator.[31])
+sci$val[32] <- validate_names(sci$unique.mostfish.Predator.[32])
+sci$val[33] <- validate_names(sci$unique.mostfish.Predator.[33])
+sci$val[34] <- validate_names(sci$unique.mostfish.Predator.[34])
+sci$val[35] <- validate_names(sci$unique.mostfish.Predator.[35])
+sci$val[36] <- validate_names(sci$unique.mostfish.Predator.[36])
+sci$val[37] <- validate_names(sci$unique.mostfish.Predator.[37])
+sci$val[38] <- validate_names(sci$unique.mostfish.Predator.[38])
+sci$val[39] <- validate_names(sci$unique.mostfish.Predator.[39])
+sci$val[40] <- validate_names(sci$unique.mostfish.Predator.[40])
+sci$val[41] <- validate_names(sci$unique.mostfish.Predator.[41])
+sci$val[42] <- validate_names(sci$unique.mostfish.Predator.[42])
+sci$val[43] <- validate_names(sci$unique.mostfish.Predator.[43])
+sci$val[44] <- validate_names(sci$unique.mostfish.Predator.[44])
+sci$val[45] <- validate_names(sci$unique.mostfish.Predator.[45])
+```
+Removes the data which isn't recognised by rfishbase from sci...
+```{r}
+sci <- sci[-c(5, 18), ]
+```
+...and from top47
+```{r}
+top47 <- top47[-c(5, 19), ]
+```
+Merge validated names from sci to top47 so all common names, beta values and PPMRs now have the predator scientific name to use in rfishbase.
+```{r}
+top47$sciname <- sci$val
+```
+Add another column to top47 for the average weights from rfishbase.
+```{r}
+top47$weights <- NA
+top47$weights <- species(species_list = top47$sciname, fields = "Weight")
+```
+Again there are a few missing values so we create a new data table with only the species which have an average weight available.
+```{r}
+wgt <- top47[-c(10, 11, 12, 14, 15, 19, 29, 35, 36, 37, 41), ]
+```
+Use this new information to create a graph of PPMR against average size.
+```{r}
+wt <- ggplot(wgt, aes(log10(wgt$PPMR) , log10(wgt$weights$Weight))) + geom_point(col="navy", pch=20, size=3) + theme_minimal() + labs(x=expression("log"[10]*"(predator species average weight)"), y=expression("log"[10]*"(PPMR)")) + theme(axis.title.y=element_text(size=20), axis.title.x=element_text(size=20), text = element_text(size=20))
+wt + geom_smooth(method = "lm", col = "red", level = 0.999)
 ```
 
