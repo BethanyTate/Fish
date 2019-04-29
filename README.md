@@ -222,6 +222,55 @@ top47$beta[46] <- coef(lm(log10(sb$SIpreymass) ~ log10(sb$SIpredmass), data = sb
 ```
 Add a column for the species PPMR.
 ```{r}
-
+top47$PPMR <- NA
+```
+Input the species PPMRs.
+```{r}
+top47$PPMR[1] <- sum(ass$SIpredmass)/sum(ass$SIpreymass)
+top47$PPMR[2] <- sum(bs$SIpredmass)/sum(bs$SIpreymass)
+top47$PPMR[3] <- sum(ap$SIpredmass)/sum(ap$SIpreymass)
+top47$PPMR[4] <- sum(abt$SIpredmass)/sum(abt$SIpreymass)
+top47$PPMR[5] <- sum(ls$SIpredmass)/sum(ls$SIpreymass)
+top47$PPMR[6] <- sum(ac$SIpredmass)/sum(ac$SIpreymass)
+top47$PPMR[7] <- sum(awf$SIpredmass)/sum(awf$SIpreymass)
+top47$PPMR[8] <- sum(swf$SIpredmass)/sum(swf$SIpreymass)
+top47$PPMR[9] <- sum(yft$SIpredmass)/sum(yft$SIpreymass)
+top47$PPMR[10] <- sum(bet$SIpredmass)/sum(bet$SIpreymass)
+top47$PPMR[11] <- sum(mfl$SIpredmass)/sum(mfl$SIpreymass)
+top47$PPMR[12] <- sum(pfl$SIpredmass)/sum(pfl$SIpreymass)
+top47$PPMR[13] <- sum(ff$SIpredmass)/sum(ff$SIpreymass)
+top47$PPMR[14] <- sum(lhs$SIpredmass)/sum(lhs$SIpreymass)
+top47$PPMR[15] <- sum(sr$SIpredmass)/sum(sr$SIpreymass)
+top47$PPMR[16] <- sum(wp$SIpredmass)/sum(wp$SIpreymass)
+top47$PPMR[17] <- sum(sh$SIpredmass)/sum(sh$SIpreymass)
+top47$PPMR[18] <- sum(svh$SIpredmass)/sum(svh$SIpreymass)
+top47$PPMR[19] <- sum(rh$SIpredmass)/sum(rh$SIpreymass)
+top47$PPMR[20] <- sum(wf$SIpredmass)/sum(wf$SIpreymass)
+top47$PPMR[21] <- sum(sf$SIpredmass)/sum(sf$SIpreymass)
+top47$PPMR[22] <- sum(lsk$SIpredmass)/sum(lsk$SIpreymass)
+top47$PPMR[23] <- sum(bf$SIpredmass)/sum(bf$SIpreymass)
+top47$PPMR[24] <- sum(ps$SIpredmass)/sum(ps$SIpreymass)
+top47$PPMR[25] <- sum(cs$SIpredmass)/sum(cs$SIpreymass)
+top47$PPMR[26] <- sum(psl$SIpredmass)/sum(psl$SIpreymass)
+top47$PPMR[27] <- sum(lc$SIpredmass)/sum(lc$SIpreymass)
+top47$PPMR[28] <- sum(lp$SIpredmass)/sum(lp$SIpreymass)
+top47$PPMR[29] <- sum(kg$SIpredmass)/sum(kg$SIpreymass)
+top47$PPMR[30] <- sum(g$SIpredmass)/sum(g$SIpreymass)
+top47$PPMR[31] <- sum(s$SIpredmass)/sum(s$SIpreymass)
+top47$PPMR[32] <- sum(ws$SIpredmass)/sum(ws$SIpreymass)
+top47$PPMR[33] <- sum(sd$SIpredmass)/sum(sd$SIpreymass)
+top47$PPMR[34] <- sum(sdf$SIpredmass)/sum(sdf$SIpreymass)
+top47$PPMR[35] <- sum(w$SIpredmass)/sum(w$SIpreymass)
+top47$PPMR[36] <- sum(eh$SIpredmass)/sum(eh$SIpreymass)
+top47$PPMR[37] <- sum(mf$SIpredmass)/sum(mf$SIpreymass)
+top47$PPMR[38] <- sum(mg$SIpredmass)/sum(mg$SIpreymass)
+top47$PPMR[39] <- sum(ba$SIpredmass)/sum(ba$SIpreymass)
+top47$PPMR[40] <- sum(cr$SIpredmass)/sum(cr$SIpreymass)
+top47$PPMR[41] <- sum(lsd$SIpredmass)/sum(lsd$SIpreymass)
+top47$PPMR[42] <- sum(jd$SIpredmass)/sum(jd$SIpreymass)
+top47$PPMR[43] <- sum(as$SIpredmass)/sum(as$SIpreymass)
+top47$PPMR[44] <- sum(af$SIpredmass)/sum(af$SIpreymass)
+top47$PPMR[45] <- sum(wh$SIpredmass)/sum(wh$SIpreymass)
+top47$PPMR[46] <- sum(sb$SIpredmass)/sum(sb$SIpreymass)
 ```
 
