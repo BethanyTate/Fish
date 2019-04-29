@@ -273,4 +273,13 @@ top47$PPMR[44] <- sum(af$SIpredmass)/sum(af$SIpreymass)
 top47$PPMR[45] <- sum(wh$SIpredmass)/sum(wh$SIpreymass)
 top47$PPMR[46] <- sum(sb$SIpredmass)/sum(sb$SIpreymass)
 ```
+Create a new dataframe with the predator scientific names, removing the entries for icefish as before and also for myctophidae fish larva since records of this common name is actually made up of 7 different species. 
+```{r}
+sci <- data.frame(unique(mostfish$Predator))
+sci <- sci[-c(11, 12, 13, 14, 16, 17, 18, 50), ]
+```
+Remove this also from top47.
+```{r}
+top47 <- top47[-c(11), ]
+```
 
