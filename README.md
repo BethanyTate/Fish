@@ -101,6 +101,11 @@ Planktivorous:
 bplank <- lm(log10(plank$`SI prey mass`) ~ log10(plank$`SI predator mass`), offset = log10(plank$`SI predator mass`))
 summary(bplank)
 ```
+Call  predator and prey mass columns new easier names.
+```{r}
+acc$SIpredmass <- acc$`SI predator mass`
+acc$SIpreymass <- acc$`SI prey mass`
+```
 Create new frames including records with each species.
 ```{r}
 ass <- subset(acc, grepl("Atlantic sharpnose shark", acc$`Predator common name`))
@@ -111,6 +116,7 @@ ls <- subset(acc, grepl("Longfin squid", acc$`Predator common name`))
 ac <- subset(acc, grepl("Atlantic cod", acc$`Predator common name`))
 awf <- subset(acc, grepl("Atlantic wolf fish", acc$`Predator common name`))
 swf <- subset(acc, grepl("Spotted wolf fish", acc$`Predator common name`))
+yft <- subset(acc, grepl("Yellowfin tuna", acc$`Predator common name`))
 bet <- subset(acc, grepl("Bigeye tuna", acc$`Predator common name`))
 mfl <- subset(acc, grepl("Myctophidae fish larva", acc$`Predator common name`))
 pfl <- subset(acc, grepl("Paralepididae fish larva", acc$`Predator common name`))
@@ -154,5 +160,68 @@ sd <- subset(acc, grepl("Spurdog / spiny dogfish", acc$`Predator common name`))
 Create a table with the predator common names of the 47 most common predators.
 ```{r}
 top47 <- data.frame(unique(mostfish$`Predator common name`))
+top47$prednames <- top47$unique.mostfish..Predator.common.name..
+top47$unique.mostfish..Predator.common.name.. <- NULL
+```
+Remove predator record Icefish as the predator length to mass conversion for all records is 0 and hence not accurate enough.
+```{r}
+top47 <- top47[-c(44),]
+```
+Create a column to add the gradients.
+```{r}
+top47$beta <- NA
+```
+Calculate the gradient of the linear regression models for each of the predator species and add the value to top47.
+```{r}
+top47$beta[1] <- coef(lm(log10(ass$SIpreymass) ~ log10(ass$SIpredmass), data = ass))[2]
+top47$beta[2] <- coef(lm(log10(bs$SIpreymass) ~ log10(bs$SIpredmass), data = bs))[2]
+top47$beta[3] <- coef(lm(log10(ap$SIpreymass) ~ log10(ap$SIpredmass), data = ap))[2]
+top47$beta[4] <- coef(lm(log10(abt$SIpreymass) ~ log10(abt$SIpredmass), data = abt))[2]
+top47$beta[5] <- coef(lm(log10(ls$SIpreymass) ~ log10(ls$SIpredmass), data = ls))[2]
+top47$beta[6] <- coef(lm(log10(ac$SIpreymass) ~ log10(ac$SIpredmass), data = ac))[2]
+top47$beta[7] <- coef(lm(log10(awf$SIpreymass) ~ log10(awf$SIpredmass), data = awf))[2]
+top47$beta[8] <- coef(lm(log10(swf$SIpreymass) ~ log10(swf$SIpredmass), data = swf))[2]
+top47$beta[9] <- coef(lm(log10(yft$SIpreymass) ~ log10(yft$SIpredmass), data = yft))[2]
+top47$beta[10] <- coef(lm(log10(bet$SIpreymass) ~ log10(bet$SIpredmass), data = bet))[2]
+top47$beta[11] <- coef(lm(log10(mfl$SIpreymass) ~ log10(mfl$SIpredmass), data = mfl))[2]
+top47$beta[12] <- coef(lm(log10(pfl$SIpreymass) ~ log10(pfl$SIpredmass), data = pfl))[2]
+top47$beta[13] <- coef(lm(log10(ff$SIpreymass) ~ log10(ff$SIpredmass), data = ff))[2]
+top47$beta[14] <- coef(lm(log10(lhs$SIpreymass) ~ log10(lhs$SIpredmass), data = lhs))[2]
+top47$beta[15] <- coef(lm(log10(sr$SIpreymass) ~ log10(sr$SIpredmass), data = sr))[2]
+top47$beta[16] <- coef(lm(log10(wp$SIpreymass) ~ log10(wp$SIpredmass), data = wp))[2]
+top47$beta[17] <- coef(lm(log10(sh$SIpreymass) ~ log10(sh$SIpredmass), data = sh))[2]
+top47$beta[18] <- coef(lm(log10(svh$SIpreymass) ~ log10(svh$SIpredmass), data = svh))[2]
+top47$beta[19] <- coef(lm(log10(rh$SIpreymass) ~ log10(rh$SIpredmass), data = rh))[2]
+top47$beta[20] <- coef(lm(log10(wf$SIpreymass) ~ log10(wf$SIpredmass), data = wf))[2]
+top47$beta[21] <- coef(lm(log10(sf$SIpreymass) ~ log10(sf$SIpredmass), data = sf))[2]
+top47$beta[22] <- coef(lm(log10(lsk$SIpreymass) ~ log10(lsk$SIpredmass), data = lsk))[2]
+top47$beta[23] <- coef(lm(log10(bf$SIpreymass) ~ log10(bf$SIpredmass), data = bf))[2]
+top47$beta[24] <- coef(lm(log10(ps$SIpreymass) ~ log10(ps$SIpredmass), data = ps))[2]
+top47$beta[25] <- coef(lm(log10(cs$SIpreymass) ~ log10(cs$SIpredmass), data = cs))[2]
+top47$beta[26] <- coef(lm(log10(psl$SIpreymass) ~ log10(psl$SIpredmass), data = psl))[2]
+top47$beta[27] <- coef(lm(log10(lc$SIpreymass) ~ log10(lc$SIpredmass), data = lc))[2]
+top47$beta[28] <- coef(lm(log10(lp$SIpreymass) ~ log10(lp$SIpredmass), data = lp))[2]
+top47$beta[29] <- coef(lm(log10(kg$SIpreymass) ~ log10(kg$SIpredmass), data = kg))[2]
+top47$beta[30] <- coef(lm(log10(g$SIpreymass) ~ log10(g$SIpredmass), data = g))[2]
+top47$beta[31] <- coef(lm(log10(s$SIpreymass) ~ log10(s$SIpredmass), data = s))[2]
+top47$beta[32] <- coef(lm(log10(ws$SIpreymass) ~ log10(ws$SIpredmass), data = ws))[2]
+top47$beta[33] <- coef(lm(log10(sd$SIpreymass) ~ log10(sd$SIpredmass), data = sd))[2]
+top47$beta[34] <- coef(lm(log10(sdf$SIpreymass) ~ log10(sdf$SIpredmass), data = sdf))[2]
+top47$beta[35] <- coef(lm(log10(w$SIpreymass) ~ log10(w$SIpredmass), data = w))[2]
+top47$beta[36] <- coef(lm(log10(eh$SIpreymass) ~ log10(eh$SIpredmass), data = eh))[2]
+top47$beta[37] <- coef(lm(log10(mf$SIpreymass) ~ log10(mf$SIpredmass), data = mf))[2]
+top47$beta[38] <- coef(lm(log10(mg$SIpreymass) ~ log10(mg$SIpredmass), data = mg))[2]
+top47$beta[39] <- coef(lm(log10(ba$SIpreymass) ~ log10(ba$SIpredmass), data = ba))[2]
+top47$beta[40] <- coef(lm(log10(cr$SIpreymass) ~ log10(cr$SIpredmass), data = cr))[2]
+top47$beta[41] <- coef(lm(log10(lsd$SIpreymass) ~ log10(lsd$SIpredmass), data = lsd))[2]
+top47$beta[42] <- coef(lm(log10(jd$SIpreymass) ~ log10(jd$SIpredmass), data = jd))[2]
+top47$beta[43] <- coef(lm(log10(as$SIpreymass) ~ log10(as$SIpredmass), data = as))[2]
+top47$beta[44] <- coef(lm(log10(af$SIpreymass) ~ log10(af$SIpredmass), data = af))[2]
+top47$beta[45] <- coef(lm(log10(wh$SIpreymass) ~ log10(wh$SIpredmass), data = wh))[2]
+top47$beta[46] <- coef(lm(log10(sb$SIpreymass) ~ log10(sb$SIpredmass), data = sb))[2]
+```
+Add a column for the species PPMR.
+```{r}
+
 ```
 
