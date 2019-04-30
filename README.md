@@ -356,6 +356,6 @@ wgt <- top47[-c(10, 11, 12, 14, 15, 19, 29, 35, 36, 37, 41), ]
 Use this new information to create a graph of PPMR against average size.
 ```{r}
 wt <- ggplot(wgt, aes(log10(wgt$PPMR) , log10(wgt$weights$Weight))) + geom_point(col="navy", pch=20, size=3) + theme_minimal() + labs(x=expression("log"[10]*"(predator species average weight)"), y=expression("log"[10]*"(PPMR)")) + theme(axis.title.y=element_text(size=20), axis.title.x=element_text(size=20), text = element_text(size=20))
-wt + geom_smooth(method = "lm", col = "red", level = 0.999)
+wt + geom_smooth(method = "loess", col = "red", level = 0.95)
 ```
 
