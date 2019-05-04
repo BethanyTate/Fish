@@ -103,18 +103,25 @@ Planktivorous:
 bplank <- lm(log10(plank$`SI prey mass`) ~ log10(plank$`SI predator mass`), offset = log10(plank$`SI predator mass`))
 summary(bplank)
 ```
-Create new table containing the adult predator records.
+Create new table containing the adult predator records only, and one containing non-adults.
 ```{r}
 adult <- subset(acc, acc$'Predator lifestage' == "adult" | acc$'Predator lifestage' == "Adult")
+nonad <- subset(acc, acc$'Predator lifestage' == "juvenile" | acc$'Predator lifestage' == "larva" | acc$'Predator lifestage' == "larva / juvenile" | acc$'Predator lifestage' == "postlarva" | acc$'Predator lifestage' == "postlarva/juvenile")
 ```
 Plot the logged predator vs. prey mass plots for adult predators only, including the linear model's line of best fit.
 ```{r}
-ad <- ggplot(adult, aes(log10(adult$`SI prey mass`), log10(adult$`SI predator mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)")) + theme(axis.title.y=element_text(size=20), axis.title.x=element_text(size=20), text = element_text(size=15))
-ad + geom_smooth(method = "lm", col = "red", level = 0.999)
+plot(log10(adult$`SI predator mass`), log10(adult$`SI prey mass`), pch=16, cex=0.4,  col="#21618c40", xlab=expression("log"[10]*"(predator mass)"), ylab=expression("log"[10]*"(prey mass)"), cex.lab=1.5, main = "Adult")
 adultreg <- lm(log10(adult$`SI prey mass`) ~ log10(adult$`SI predator mass`))
+abline(adultreg, col="#c0392b", lwd = 2)
 summary(adultreg)
 ```
-
+Similarly, plot the logged predator vs. prey mass plots for non-adult predators only, including the linear model's line of best fit.
+```{r}
+plot(log10(nonad$`SI predator mass`), log10(nonad$`SI prey mass`), pch=16, cex=0.4,  col="#21618c40", xlab=expression("log"[10]*"(predator mass)"), ylab=expression("log"[10]*"(prey mass)"), cex.lab=1.5, main = "Non-Adult")
+nadreg <- lm(log10(nonad$`SI prey mass`) ~ log10(nonad$`SI predator mass`))
+abline(nadreg, col="#c0392b", lwd = 2)
+summary(nadreg)
+```
 
 Call  predator and prey mass columns new easier names.
 ```{r}
