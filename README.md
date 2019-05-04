@@ -103,6 +103,19 @@ Planktivorous:
 bplank <- lm(log10(plank$`SI prey mass`) ~ log10(plank$`SI predator mass`), offset = log10(plank$`SI predator mass`))
 summary(bplank)
 ```
+Create new table containing the adult predator records.
+```{r}
+adult <- subset(acc, acc$'Predator lifestage' == "adult" | acc$'Predator lifestage' == "Adult")
+```
+Plot the logged predator vs. prey mass plots for adult predators only, including the linear model's line of best fit.
+```{r}
+ad <- ggplot(adult, aes(log10(adult$`SI prey mass`), log10(adult$`SI predator mass`))) + geom_point(col="#21618c40", pch=20) + theme_minimal() + labs(x=expression("log"[10]*"(predator mass)"), y=expression("log"[10]*"(prey mass)")) + theme(axis.title.y=element_text(size=20), axis.title.x=element_text(size=20), text = element_text(size=15))
+ad + geom_smooth(method = "lm", col = "red", level = 0.999)
+adultreg <- lm(log10(adult$`SI prey mass`) ~ log10(adult$`SI predator mass`))
+summary(adultreg)
+```
+
+
 Call  predator and prey mass columns new easier names.
 ```{r}
 acc$SIpredmass <- acc$`SI predator mass`
